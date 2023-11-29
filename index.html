@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>A Standard OnScreen Calculator</title>
     <script src="app.js" defer></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <div class="calculator">
             <div class="display">
-                <input type="text" id="display1">
-                <input type="text" id="display2">
+                <input type="text" id="display1" value="0" disabled>
+                <input type="text" id="display2" value="0" disabled>
             </div>
             <button id="modulos" class="opp-btn">%</button>
             <button id="ce" class="opp-btn">CE</button>
@@ -36,7 +37,7 @@
             <button id="plus-minus">&#xB1;</button>
             <button id="zero" >0</button>
             <button id="dot">.</button>
-            <button id="equals" class="opp-btn">=</button>
+            <button id="equals">=</button>
         </div>
     </div>
     
