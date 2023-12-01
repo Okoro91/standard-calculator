@@ -41,7 +41,7 @@ let updateDisplay = function() {
         firstDisplay.value = firstDigit;
     }
 
-    if(operator){
+    if(operator && firstDigit){
         secondDisplay.value  = `${firstDigit}  ${operator}`;
         firstDisplay.value = firstDigit;
     }
@@ -169,7 +169,10 @@ buttons.forEach(button => {
                 evaluatePair();
             }
             
-            operator = buttonValue;
+            if(firstDigit){
+                operator = buttonValue;
+            }
+            
         
         } else if (buttonValue === '=') {
 
@@ -185,11 +188,54 @@ buttons.forEach(button => {
             removeCharacter();
         }else if(buttonValue === '±'){
             toggleSign();
-            console.log('i am a ghost');
         }
 
         updateDisplay();
     });
 });
+
+
+
+
+
+// // Function to handle both button clicks and keyboard presses
+// function handleInput(inputValue) {
+//     if ((inputValue >= '0' && inputValue <= '9') || inputValue === '.') {
+//         // ... (your existing numeric input logic)
+//     } else if (inputValue === '+' || inputValue === '-' || inputValue === '*' || inputValue === '/' || inputValue === '%') {
+//         // ... (your existing operator input logic)
+//     } else if (inputValue === '=') {
+//         // ... (your existing equal input logic)
+//     } else if (inputValue === 'CE') {
+//         // ... (your existing clear input logic)
+//     } else if (inputValue === 'DEL') {
+//         // ... (your existing delete input logic)
+//     } else if (inputValue === '±') {
+//         // ... (your existing plus-minus input logic)
+//         toggleSign();
+//     }
+//     // ... (any other input logics you have)
+//     updateDisplay();
+// }
+
+// // Add an event listener for both button clicks and keyboard presses
+// document.addEventListener('keydown', function(event) {
+//     // Get the key code or key from the event
+//     const keyValue = event.key || String.fromCharCode(event.keyCode);
+
+//     // Call the common function with the input value
+//     handleInput(keyValue);
+// });
+
+// // Add event listeners for button clicks
+// buttons.forEach(button => {
+//     button.addEventListener('click', function() {
+//         // Get the button text content
+//         const buttonValue = button.textContent;
+
+//         // Call the common function with the input value
+//         handleInput(buttonValue);
+//     });
+// });
 
 
