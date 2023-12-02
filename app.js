@@ -53,6 +53,11 @@ let updateDisplay = function() {
 
    
     if (result !== null) {
+
+        if (result % 1 !== 0) {
+            
+            result = parseFloat(result.toFixed(6));
+        }
             firstDisplay.value = result;
             secondDisplay.value  = `${firstDigit}  ${operator}  ${secondDigit}  =`;
 
@@ -112,10 +117,6 @@ let zeroDivision = function() {
 let evaluatePair = function() {
     if (firstDigit && operator && secondDigit) {
         result = operate(parseFloat(firstDigit), parseFloat(secondDigit), operator);
-
-        // if(result.toString().includes('.')){
-        //     result = result.toFixed(6);
-        // }
         varifyOperator = true;
     }
 }
@@ -139,7 +140,7 @@ let varifyOperator = false;
 
 function handleInput(inputValue) {
 
-    // const isForwardSlash = inputValue === '/' || event.key === '/' || event.keyCode === 111 || event.key === 'Divide';
+    const isForwardSlash = inputValue === '/' || event.key === '/' || event.keyCode === 111 || event.key === 'Divide';
 
     if ((inputValue >= '0' && inputValue <= '9') || inputValue === '.') {
         
@@ -157,7 +158,7 @@ function handleInput(inputValue) {
                         }else{
                             firstDigit += inputValue;
                         }
-    } else if (inputValue === '+' || inputValue === '-' || inputValue === '*' || inputValue === '/' || inputValue === '%') {
+    } else if (inputValue === '+' || inputValue === '-' || inputValue === '*' || isForwardSlash || inputValue === '%') {
        
         if (result !== null) {
                             evaluatePair();
@@ -173,10 +174,10 @@ function handleInput(inputValue) {
                         }
                         
                         if(firstDigit){
-                            operator = inputValue;
+                          operator = inputValue;
                         }
                         
-    } else if (inputValue === '=') {
+    } else if (inputValue === '=' || inputValue === 'Enter') {
        
         if (firstDigit && operator && secondDigit) {
                             evaluatePair();
@@ -184,10 +185,10 @@ function handleInput(inputValue) {
                              zeroDivision();
                              updateDisplay();
                         }
-    } else if (inputValue === 'CE') {
+    } else if (inputValue === 'CE' || inputValue === 'Escape') {
        
         clearButton();
-    } else if (inputValue === 'DEL') {
+    } else if (inputValue === 'DEL' || inputValue === 'Backspace') {
         
         removeCharacter();
     } else if (inputValue === '±') {
@@ -203,9 +204,6 @@ document.addEventListener('keydown', function(event) {
     
     const keyValue = event.key || String.fromCharCode(event.keyCode);
 
-//     if (e.key === '=' || e.key === 'Enter') evaluate()
-//   if (e.key === 'Backspace') deleteNumber()
-//   if (e.key === 'Escape') clear()
     handleInput(keyValue);
 });
 
