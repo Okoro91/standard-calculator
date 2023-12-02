@@ -23,7 +23,7 @@ let secondDisplay = document.querySelector('#display1');
     } else if (operator === '*') {
         return multiply(num1, num2);
     } else if (operator === '/') {
-        return divide(num1, num2);
+       return divide(num1, num2);
     } else if (operator === '%') {
         return modulos(num1, num2);
     } else {
@@ -53,7 +53,7 @@ let updateDisplay = function() {
 
    
     if (result !== null) {
-            firstDisplay.value = result.toString();
+            firstDisplay.value = result;
             secondDisplay.value  = `${firstDigit}  ${operator}  ${secondDigit}  =`;
 
     }
@@ -89,8 +89,6 @@ let removeCharacter = function() {
 
 
 
-
-
 let clearButton = function() {
     firstDigit = '';
     secondDigit = '';
@@ -107,16 +105,21 @@ let zeroDivision = function() {
     }
 }
 
+
+
+
+
 let evaluatePair = function() {
     if (firstDigit && operator && secondDigit) {
         result = operate(parseFloat(firstDigit), parseFloat(secondDigit), operator);
 
-        if(result.toString().includes('.')){
-            result = result.toFixed(6)
-        }
+        // if(result.toString().includes('.')){
+        //     result = result.toFixed(6);
+        // }
         varifyOperator = true;
     }
 }
+
 
 let toggleSign = function() {
     if (result !== null) {
@@ -134,108 +137,86 @@ let toggleSign = function() {
 let result = null; 
 let varifyOperator = false; 
 
-buttons.forEach(button => {
-    button.addEventListener('click', function() {
-        const buttonValue = button.textContent;
+function handleInput(inputValue) {
 
-        if ((buttonValue >= '0' && buttonValue <= '9') || buttonValue === '.') {
+    // const isForwardSlash = inputValue === '/' || event.key === '/' || event.keyCode === 111 || event.key === 'Divide';
 
-            if (buttonValue === '.' && (secondDigit.includes('.') || firstDigit.includes('.'))) {
-
-                return;
-            }
-            
-            if(result !== null && !varifyOperator){
-                clearButton();
-            }
-
-            if(operator){
-                secondDigit += buttonValue;
-            }else{
-                firstDigit += buttonValue;
-            }
-            
-        } else if (buttonValue === '+' || buttonValue === '-' || buttonValue === '*' || buttonValue === '/' || buttonValue === '%') {
-            
-            if (result !== null) {
-                evaluatePair();
-                firstDigit = result.toString();
-                secondDigit = '';
-                result = '';
-                varifyOperator = true;
-            }
-
-            if (operator && secondDigit) {
-                evaluatePair();
-            }
-            
-            if(firstDigit){
-                operator = buttonValue;
-            }
-            
+    if ((inputValue >= '0' && inputValue <= '9') || inputValue === '.') {
         
-        } else if (buttonValue === '=') {
+        if (inputValue === '.' && (secondDigit.includes('.') || firstDigit.includes('.'))) {
 
-            if (firstDigit && operator && secondDigit) {
-                evaluatePair();
-                 varifyOperator = false;
-                 zeroDivision();
-                updateDisplay();
-            }
-        } else if(buttonValue === 'CE'){
-            clearButton();
-        }else if (buttonValue === 'DEL'){
-            removeCharacter();
-        }else if(buttonValue === '±'){
-            toggleSign();
-        }
+                            return;
+                        }
+                        
+                        if(result !== null && !varifyOperator){
+                            clearButton();
+                        }
+            
+                        if(operator){
+                            secondDigit += inputValue;
+                        }else{
+                            firstDigit += inputValue;
+                        }
+    } else if (inputValue === '+' || inputValue === '-' || inputValue === '*' || inputValue === '/' || inputValue === '%') {
+       
+        if (result !== null) {
+                            evaluatePair();
+                            
+                            firstDigit = result.toString();
+                            secondDigit = '';
+                            result = '';
+                            varifyOperator = true;
+                        }
+            
+                        if (operator && secondDigit) {
+                            evaluatePair();
+                        }
+                        
+                        if(firstDigit){
+                            operator = inputValue;
+                        }
+                        
+    } else if (inputValue === '=') {
+       
+        if (firstDigit && operator && secondDigit) {
+                            evaluatePair();
+                             varifyOperator = false;
+                             zeroDivision();
+                             updateDisplay();
+                        }
+    } else if (inputValue === 'CE') {
+       
+        clearButton();
+    } else if (inputValue === 'DEL') {
+        
+        removeCharacter();
+    } else if (inputValue === '±') {
+        
+        toggleSign();
+    }
+   
+    updateDisplay();
+}
 
-        updateDisplay();
-    });
+
+document.addEventListener('keydown', function(event) {
+    
+    const keyValue = event.key || String.fromCharCode(event.keyCode);
+
+//     if (e.key === '=' || e.key === 'Enter') evaluate()
+//   if (e.key === 'Backspace') deleteNumber()
+//   if (e.key === 'Escape') clear()
+    handleInput(keyValue);
 });
 
 
+buttons.forEach(button => {
+    button.addEventListener('click', function() {
+        
+        const buttonValue = button.textContent;
 
-
-
-// // Function to handle both button clicks and keyboard presses
-// function handleInput(inputValue) {
-//     if ((inputValue >= '0' && inputValue <= '9') || inputValue === '.') {
-//         // ... (your existing numeric input logic)
-//     } else if (inputValue === '+' || inputValue === '-' || inputValue === '*' || inputValue === '/' || inputValue === '%') {
-//         // ... (your existing operator input logic)
-//     } else if (inputValue === '=') {
-//         // ... (your existing equal input logic)
-//     } else if (inputValue === 'CE') {
-//         // ... (your existing clear input logic)
-//     } else if (inputValue === 'DEL') {
-//         // ... (your existing delete input logic)
-//     } else if (inputValue === '±') {
-//         // ... (your existing plus-minus input logic)
-//         toggleSign();
-//     }
-//     // ... (any other input logics you have)
-//     updateDisplay();
-// }
-
-// // Add an event listener for both button clicks and keyboard presses
-// document.addEventListener('keydown', function(event) {
-//     // Get the key code or key from the event
-//     const keyValue = event.key || String.fromCharCode(event.keyCode);
-
-//     // Call the common function with the input value
-//     handleInput(keyValue);
-// });
-
-// // Add event listeners for button clicks
-// buttons.forEach(button => {
-//     button.addEventListener('click', function() {
-//         // Get the button text content
-//         const buttonValue = button.textContent;
-
-//         // Call the common function with the input value
-//         handleInput(buttonValue);
-//     });
-// });
+        handleInput(buttonValue);
+    });
+});
 
 
